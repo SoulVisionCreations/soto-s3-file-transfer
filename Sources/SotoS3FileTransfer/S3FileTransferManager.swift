@@ -612,7 +612,8 @@ extension S3FileTransferManager {
     static func targetFiles(files: [FileDescriptor], from srcFolder: String, to destFolder: S3Folder) -> [(from: FileDescriptor, to: S3File)] {
         let srcFolder = srcFolder.appendingSuffixIfNeeded("/")
         return files.map { file in
-            let pathRelative = file.name.removingPrefix(srcFolder)
+        let pathRelative = URL(fileURLWithPath: file.name).lastPathComponent
+//      let pathRelative = file.name.removingPrefix("/private"+srcFolder)
             return (from: file, to: S3File(bucket: destFolder.bucket, key: destFolder.key + pathRelative))
         }
     }
